@@ -3,6 +3,7 @@ import kiosk_backend
 import text_to_speech
 from tkinter import *
 import customtkinter
+import os
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -44,7 +45,7 @@ class App(customtkinter.CTk):
         self.sum_quant = customtkinter.CTkLabel(self.orders_frame, text=str(self.orders['quantities'][2]))
         self.sum_quant.grid(row=2, column=1, padx=10, pady=(10, 0), sticky="ew")
 
-        self.button = customtkinter.CTkButton(self, text="my button", command=self.button_callback)
+        self.button = customtkinter.CTkButton(self, text="Order", command=self.button_callback)
         self.button.grid(row=3, column=0, padx=10, pady=10, sticky="ew", columnspan=2)
     def order(self,menu):
         self.orders['quantities'][menu] += 1

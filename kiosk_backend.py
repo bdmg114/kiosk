@@ -4,10 +4,8 @@ import requests
 import kiosk_output_interpreter
 import speech_to_text
 
-API_key = "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"
-
 openai.organization = "org-CRggXsSZlMOf2ystqQcgBWC2"
-openai.api_key = API_key
+openai.api_key = os.environ['OPENAI_API_KEY']
 openai.Model.list()
 
 messages =[

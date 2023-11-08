@@ -18,7 +18,7 @@ class App(customtkinter.CTk):
         }
 
         self.title("my app")
-        #self.attributes("-fullscreen", True)
+        self.attributes("-fullscreen", True)
         self.geometry('800x480+0+0')
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
@@ -26,12 +26,16 @@ class App(customtkinter.CTk):
 
         self.checkbox_frame = customtkinter.CTkFrame(self)
         self.checkbox_frame.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="nsew")
+
         self.shake_button = customtkinter.CTkButton(self.checkbox_frame, text="milsut shake swamp", command=lambda: self.order(0))
-        self.shake_button.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="w")
+        self.shake_button.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="ew")
+
         self.salad_button = customtkinter.CTkButton(self.checkbox_frame, text="mil worm forest salads", command=lambda: self.order(1))
-        self.salad_button.grid(row=1, column=0, padx=10, pady=(10, 0), sticky="w")
+        self.salad_button.grid(row=1, column=0, padx=10, pady=(10, 0), sticky="ew")
+
         self.DIMSUM_button = customtkinter.CTkButton(self.checkbox_frame, text="dim island", command=lambda: self.order(2))
-        self.DIMSUM_button.grid(row=2, column=0, padx=10, pady=(10, 0), sticky="w")
+        self.DIMSUM_button.grid(row=2, column=0, padx=10, pady=(10, 0), sticky="ew")
+
 
         self.orders_frame = customtkinter.CTkFrame(self)
         self.orders_frame.grid(row=0, column=1, padx=10, pady=(10, 0), sticky="nsew")

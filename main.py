@@ -6,6 +6,9 @@ from tkinter import messagebox
 import customtkinter
 import os
 import time
+import pygame
+pygame.mixer.pre_init(44100, -16, 2, 2048)
+pygame.mixer.init()
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -19,7 +22,6 @@ class App(customtkinter.CTk):
 
         self.title("my app")
         self.attributes("-fullscreen", True)
-        self.geometry('800x480+0+0')
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
         
@@ -132,15 +134,18 @@ class App(customtkinter.CTk):
             if s != '!P':
                 q = 'k'
                 while q != '':
+                    print(s)
                     if text_to_speech.gtts_test(s):
-                        q = speech_to_text.start_speech_recognition()
+                        print("said")
+                        q = speech_to_text.speech_recognition_thread()
                         s = kiosk_backend.get_input(q)
                 out = kiosk_backend.output()
                 for x in range(len(out['quantities'])):
                     self.orders['quantities'][self.orders['quantities'].index(out['menu_items'][x])] += out['quantities'][x]
                 self.set_quantity_text()
         except Exception as e:
-            self.after(0, lambda: self.show_error_message(str(e)))
+            print(e)
+            self.after(0, lambda err=e: self.show_error_message(str(err)))
         # Close the modal dialog after processing or displaying error
         finally:
             modal_dialog.destroy()

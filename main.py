@@ -109,6 +109,7 @@ class App(customtkinter.CTk):
         modal_dialog.title("")
         modal_dialog.overrideredirect(1)  # Remove window decorations (including title bar)
         modal_dialog.geometry(f"{modal_width}x{modal_height}+{x_position}+{y_position}")
+        modal_dialog.lift(self)
         modal_dialog.grab_set()  # Grab focus and block interactions with other windows
         
         modal_dialog.grid_columnconfigure(0, weight=1)

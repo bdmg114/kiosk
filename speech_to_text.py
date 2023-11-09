@@ -62,4 +62,3 @@ def start_speech_recognition():
     # Wait for the event to be set (speech recognition completion)
     speech_recognition_complete.wait()
     return speech_recognition_result
-print(speech_recognition_thread())

@@ -7,6 +7,8 @@ import customtkinter
 import os
 import time
 import pygame
+#import socket_sender
+
 pygame.mixer.pre_init(44100, -16, 2, 2048)
 pygame.mixer.init()
 
@@ -58,13 +60,19 @@ class App(customtkinter.CTk):
         self.AIbutton.grid(row=3, column=0, padx=10, pady=5, sticky="ew", columnspan=2)
         self.button = customtkinter.CTkButton(self, text="Order", command=self.button_callback)
         self.button.grid(row=4, column=0, padx=10, pady=10, sticky="ew", columnspan=2)
-
+    
+    def set_quatity_text(self):
+        self.sum_quant.configure(text = str(self.orders['quantities'][2]))
+        self.salad_quant.configure(text = str(self.orders['quantities'][1]))
+        self.shake_quant.configure(text = str(self.orders['quantities'][0]))
+        
     def order(self,menu):
         self.orders['quantities'][menu] += 1
         self.set_quatity_text()
     
     def button_callback(self):
         print(self.orders)
+        #socket_sender.send_order(self.orders)
         self.orders = {
             "menu_items": ['milsut shake swamp', 'mil worm forest salads', 'dim island'],
             "quantities": [0,0,0],
@@ -100,11 +108,6 @@ class App(customtkinter.CTk):
 
         modal_dialog.destroy()
 
-    def set_quatity_text(self):
-        self.sum_quant.configure(text = str(self.orders['quantities'][2]))
-        self.salad_quant.configure(text = str(self.orders['quantities'][1]))
-        self.shake_quant.configure(text = str(self.orders['quantities'][0]))
-
     def AI_Button(self):
         main_window_width = self.winfo_width()
         main_window_height = self.winfo_height()
@@ -137,12 +140,15 @@ class App(customtkinter.CTk):
                     print(s)
                     if text_to_speech.gtts_test(s):
                         print("said")
-                        q = speech_to_text.speech_recognition_thread()
+                        q = input()
                         s = kiosk_backend.get_input(q)
                 out = kiosk_backend.output()
+                print(out)
                 for x in range(len(out['quantities'])):
-                    self.orders['quantities'][self.orders['quantities'].index(out['menu_items'][x])] += out['quantities'][x]
-                self.set_quantity_text()
+                    self.orders['quantities'][self.orders['menu_items'].index(out['menu_items'][x].lower())] += out['quantities'][x]
+                self.sum_quant.configure(text = str(self.orders['quantities'][2]))
+                self.salad_quant.configure(text = str(self.orders['quantities'][1]))
+                self.shake_quant.configure(text = str(self.orders['quantities'][0]))
         except Exception as e:
             print(e)
             self.after(0, lambda err=e: self.show_error_message(str(err)))

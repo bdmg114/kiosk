@@ -1,22 +1,23 @@
+import re
+
 def interpret(string):
-    string = string.replace('<S>\n', '')
+    input_string = string
+    pattern = r'"menu_items": \[[^\]]+\]\n"quantities": \[\d+\]\n"extra_info": \["[^\]]+"\]'
+    # Remove '<S>' and newlines from the input string
+    cleaned_string = input_string.replace('{\n', '')
+    cleaned_string = cleaned_string.replace('\n}', '')
 
-    # Create an empty dictionary to store the variables
-    data_dict = {}
+    if '],' in cleaned_string:
+        cleaned_string = cleaned_string.replace('\n', '')
+    else:
+        cleaned_string = cleaned_string.replace('\n', ',')
 
-    # Execute the input string as code in a controlled environment
-    exec(string, {}, data_dict)
+    print('{'+cleaned_string+'}')
 
-    # Extract the variables from the local namespace
-    menu_items = data_dict.get('menu_items', [])
-    quantities = data_dict.get('quantities', [])
-    extra_info = data_dict.get('extra_info', [])
+    # Evaluate the cleaned string using eval() to convert it into a dictionary
+    result_dict = eval('{'+cleaned_string+'}')
 
-    # Create the final dictionary
-    result = {
-        "menu_items": menu_items,
-        "quantities": quantities,
-        "extra_info": extra_info
-    }
 
-    return result
+    print(result_dict)
+
+    return result_dict

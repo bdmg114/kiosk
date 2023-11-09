@@ -40,7 +40,7 @@ def speech_recognition_thread(n):
                 target_microphone_index = idx
                 print(idx)
                 break
-        mic = sr.Microphone(device_index = n)
+        mic = sr.Microphone()
 
         with mic as source:
             r.adjust_for_ambient_noise(source)

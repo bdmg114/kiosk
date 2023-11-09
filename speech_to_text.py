@@ -26,32 +26,32 @@ def get_ready_to_listen():
 
 # Create an event to signal the completion of speech recognition
 speech_recognition_complete = threading.Event()
-def speech_recognition_thread():
-    r = sr.Recognizer()
-    names = sr.Microphone.list_microphone_names()
-    print(names)
+def speech_recognition_thread(n):
+    try:
+        r = sr.Recognizer()
+        names = sr.Microphone.list_microphone_names()
+        print(names)
 
-    target_microphone_index = None
-    target_microphone_name = '마이크 (USB PnP Sound Device)'
-    
-    for idx, name in enumerate(names):
-        if target_microphone_name in name:
-            target_microphone_index = idx
-            print(idx)
-            break
-    mic = sr.Microphone(device_index = 1)
+        target_microphone_index = None
+        target_microphone_name = '마이크 (USB PnP Sound Device)'
+        
+        for idx, name in enumerate(names):
+            if target_microphone_name in name:
+                target_microphone_index = idx
+                print(idx)
+                break
+        mic = sr.Microphone(device_index = n)
 
-    with mic as source:
-        r.adjust_for_ambient_noise(source)
-        ding = pygame.mixer.Sound("ding.mp3")
-        ding.play()
-        audio = r.listen(source)
-    result = r.recognize_google(audio, language="en-US")
-    # Process the recognized speech result
-    speech_recognition_result = result
-    return result
-    # Set the event to signal completion
-    speech_recognition_complete.set()
+        with mic as source:
+            r.adjust_for_ambient_noise(source)
+            ding = pygame.mixer.Sound("ding.mp3")
+            ding.play()
+            audio = r.listen(source)
+        result = r.recognize_google(audio, language="en-US")
+        print(result)
+        return result
+    except:
+        return ''
 
 def start_speech_recognition():
     global speech_recognition_result

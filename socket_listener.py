@@ -6,8 +6,6 @@ client_sockets = []
 HOST = socket.gethostbyname(socket.gethostname())
 PORT = 9999
 
-## new client, new thread ##
-
 def threaded(client_socket, addr):
     print('>> Connected by :', addr[0], ':', addr[1])
 

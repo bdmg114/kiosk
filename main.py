@@ -7,10 +7,26 @@ import customtkinter
 import os
 import time
 import pygame
-#import socket_sender
+from tkinter.simpledialog import askstring
+import argparse
+import socket_sender
 
 pygame.mixer.pre_init(44100, -16, 2, 2048)
 pygame.mixer.init()
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--voiceRecog',type=bool,default=False)
+parser.add_argument('--micN',type=int,default=1)
+parser.add_argument('--IP',type=str,default='172.16.5.106')
+
+args = parser.parse_args()
+
+voiceRecognization = args.voiceRecog
+n = args.micN
+ip = args.IP
+
+socket_sender.init(ip)
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -72,7 +88,7 @@ class App(customtkinter.CTk):
     
     def button_callback(self):
         print(self.orders)
-        #socket_sender.send_order(self.orders)
+        socket_sender.send_order(self.orders)
         self.orders = {
             "menu_items": ['milsut shake swamp', 'mil worm forest salads', 'dim island'],
             "quantities": [0,0,0],
@@ -140,7 +156,10 @@ class App(customtkinter.CTk):
                     print(s)
                     if text_to_speech.gtts_test(s):
                         print("said")
-                        q = input()
+                        if voiceRecognization:
+                            q = speech_to_text.speech_recognition_thread(n)
+                        else:
+                            q = askstring('Give answer', s)
                         s = kiosk_backend.get_input(q)
                 out = kiosk_backend.output()
                 print(out)

@@ -1,13 +1,10 @@
 import os
-import openai
 import requests
 import kiosk_output_interpreter
 import speech_to_text
 
-openai.organization = "org-CRggXsSZlMOf2ystqQcgBWC2"
-openai.api_key = os.environ['OPENAI_API_KEY']
 API_key = os.environ['OPENAI_API_KEY']
-openai.Model.list()
+
 print(API_key)
 
 respone = ''

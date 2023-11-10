@@ -18,9 +18,11 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument('--voiceRecog',type=bool,default=False)
 parser.add_argument('--micN',type=int,default=1)
-parser.add_argument('--IP',type=str,default='172.16.5.106')
+parser.add_argument('--IP',type=str,default='dd')
 
 args = parser.parse_args()
+
+print(args)
 
 voiceRecognization = args.voiceRecog
 n = args.micN
@@ -126,28 +128,6 @@ class App(customtkinter.CTk):
         modal_dialog.destroy()
 
     def AI_Button(self):
-        main_window_width = self.winfo_width()
-        main_window_height = self.winfo_height()
-
-        # Calculate the position to center the modal dialog
-        modal_width = int(main_window_width/3) # Width of the modal dialog
-        modal_height = int(main_window_height/3)  # Height of the modal dialog
-        x_position = (main_window_width - modal_width) // 2
-        y_position = (main_window_height - modal_height) // 2
-
-        # Create a modal dialog window without a title bar and center it
-        modal_dialog = Toplevel(self)
-        modal_dialog.title("")
-        modal_dialog.overrideredirect(1)  # Remove window decorations (including title bar)
-        modal_dialog.geometry(f"{modal_width}x{modal_height}+{x_position}+{y_position}")
-        modal_dialog.lift(self) 
-        modal_dialog.grab_set()  # Grab focus and block interactions with other windows
-
-        # Add a label to the modal dialog
-        processing_label = Label(modal_dialog, text="Getting ready...")
-        processing_label.pack(padx=20, pady=20)
-
-        self.update()
 
         try:
             # Call the backend processing functions
@@ -173,9 +153,6 @@ class App(customtkinter.CTk):
         except Exception as e:
             print(e)
             self.after(0, lambda err=e: self.show_error_message(str(err)))
-        # Close the modal dialog after processing or displaying error
-        finally:
-            modal_dialog.destroy()
     def show_error_message(self, error_message):
         messagebox.showerror("Error", error_message)
 app = App()
